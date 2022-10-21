@@ -6,10 +6,9 @@
 
 #include "lib.h"
 
-
 void print_ip(const std::vector<std::string>& ip)
 {
-    int i = 0;
+    size_t i = 0;
     for (const auto& ip_part : ip)
     {
         if (i != 0)
@@ -22,12 +21,20 @@ void print_ip(const std::vector<std::string>& ip)
     std::cout << std::endl;
 }
 
+void print_ip_pool(const std::vector<std::vector<std::string>>& ip_pool)
+{
+    for (const auto& ip : ip_pool)
+    {
+        print_ip(ip);
+    }
+}
 
 int main(int, char **)
 {
     try
     {
-        std::vector<std::vector<std::string> > ip_pool;
+        std::vector<std::vector<std::string>> ip_pool;
+        std::vector<std::vector<std::string>> result;
 
         for (std::string line; std::getline(std::cin, line);)
         {
@@ -37,11 +44,7 @@ int main(int, char **)
 
         // TODO reverse lexicographically sort
         desc_sort(ip_pool);
-
-        for (const auto& ip : ip_pool)
-        {
-            print_ip(ip);
-        }
+        print_ip_pool(ip_pool);
 
         // 222.173.235.246
         // 222.130.177.64
@@ -54,11 +57,8 @@ int main(int, char **)
         // TODO filter by first byte and output
         // ip = filter(1)
 
-        for (const auto& ip : ip_pool)
-        {
-            if (ip.at(0) == "1")
-                print_ip(ip);
-        }
+        result = filter(ip_pool, 1);
+        print_ip_pool(result);
 
         // 1.231.69.33
         // 1.87.203.225
@@ -69,11 +69,8 @@ int main(int, char **)
         // TODO filter by first and second bytes and output
         // ip = filter(46, 70)
 
-        for (const auto& ip : ip_pool)
-        {
-            if (ip.at(0) == "46" && ip.at(1) == "70")
-                print_ip(ip);
-        }
+        result = filter(ip_pool, 46, 70);
+        print_ip_pool(result);
 
         // 46.70.225.39
         // 46.70.147.26
@@ -83,14 +80,8 @@ int main(int, char **)
         // TODO filter by any byte and output
         // ip = filter_any(46)
 
-        for (const auto& ip : ip_pool)
-        {
-            if (ip.at(0) == "46" || ip.at(1) == "46" ||
-                ip.at(2) == "46" || ip.at(3) == "46")
-            {
-                print_ip(ip);
-            }
-        }
+        result = filter_any(ip_pool, 46);
+        print_ip_pool(result);
 
         // 186.204.34.46
         // 186.46.222.194

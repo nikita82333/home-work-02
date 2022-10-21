@@ -65,3 +65,111 @@ TEST(sort_test, test1)
             };
     TestSort(input, expected);
 }
+TEST(filter_test, test1)
+{
+    const std::vector<std::vector<std::string>> input =
+            {
+                    {"185","46","86","131"},
+                    {"185","46","86","22"},
+                    {"185","46","85","204"},
+                    {"185","46","85","78"},
+                    {"68","46","218","208"},
+                    {"49","251","197","23"}
+            };
+    const std::vector<std::vector<std::string>> expected =
+            {
+                    {"185","46","86","131"},
+                    {"185","46","86","22"},
+                    {"185","46","85","204"},
+                    {"185","46","85","78"}
+            };
+    std::vector<std::vector<std::string>> result;
+    result = filter(input, 185);
+    ASSERT_EQ(result, expected);
+}
+TEST(filter_test, test2)
+{
+    const std::vector<std::vector<std::string>> input =
+            {
+                    {"185","46","86","131"},
+                    {"185","46","86","22"},
+                    {"185","46","85","204"},
+                    {"185","46","85","78"},
+                    {"68","46","218","208"},
+                    {"49","251","197","23"}
+            };
+    const std::vector<std::vector<std::string>> expected =
+            {
+                    {"185","46","86","131"},
+                    {"185","46","86","22"}
+            };
+    std::vector<std::vector<std::string>> result;
+    result = filter(input, -1, 46, 86);
+    ASSERT_EQ(result, expected);
+}
+TEST(filter_test, test3)
+{
+    const std::vector<std::vector<std::string>> input =
+            {
+                    {"185","46","86","131"},
+                    {"185","46","86","22"},
+                    {"185","46","85","204"},
+                    {"185","46","85","78"},
+                    {"68","46","218","208"},
+                    {"49","251","197","23"}
+            };
+    const std::vector<std::vector<std::string>> expected =
+            {
+                    {"49","251","197","23"}
+            };
+    std::vector<std::vector<std::string>> result;
+    result = filter(input, -1, -1, -1, 23);
+    ASSERT_EQ(result, expected);
+}
+TEST(filter_any_test, test1)
+{
+    const std::vector<std::vector<std::string>> input =
+            {
+                    {"185","46","86","131"},
+                    {"185","46","86","22"},
+                    {"185","46","85","204"},
+                    {"185","46","85","78"},
+                    {"46","70","29","76"},
+                    {"46","55","46","86"},
+                    {"46","49","43","86"},
+                    {"39","46","86","85"}
+            };
+    const std::vector<std::vector<std::string>> expected =
+            {
+                    {"185","46","86","131"},
+                    {"185","46","86","22"},
+                    {"46","55","46","86"},
+                    {"46","49","43","86"},
+                    {"39","46","86","85"}
+            };
+    std::vector<std::vector<std::string>> result;
+    result = filter_any(input, 86);
+    ASSERT_EQ(result, expected);
+}
+TEST(filter_any_test, test2) {
+    const std::vector<std::vector<std::string>> input =
+            {
+                    {"185", "46", "86", "131"},
+                    {"185", "46", "86", "22"},
+                    {"185", "46", "85", "204"},
+                    {"185", "46", "85", "78"},
+                    {"46",  "70", "29", "76"},
+                    {"46",  "55", "46", "86"},
+                    {"46",  "49", "43", "86"},
+                    {"39",  "46", "86", "85"}
+            };
+    const std::vector<std::vector<std::string>> expected =
+            {
+                    {"185", "46", "85", "204"},
+                    {"185", "46", "85", "78"},
+                    {"39",  "46", "86", "85"}
+            };
+    std::vector<std::vector<std::string>> result;
+    result = filter_any(input, 46, 85);
+    ASSERT_EQ(result, expected);
+}
