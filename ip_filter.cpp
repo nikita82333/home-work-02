@@ -6,7 +6,7 @@
 
 #include "lib.h"
 
-void print_ip(const std::vector<std::string>& ip)
+void print_ip(const std::array<int, 4>& ip)
 {
     size_t i = 0;
     for (const auto& ip_part : ip)
@@ -21,7 +21,7 @@ void print_ip(const std::vector<std::string>& ip)
     std::cout << std::endl;
 }
 
-void print_ip_pool(const std::vector<std::vector<std::string>>& ip_pool)
+void print_ip_pool(const ip_table_int& ip_pool)
 {
     for (const auto& ip : ip_pool)
     {
@@ -33,14 +33,17 @@ int main(int, char **)
 {
     try
     {
-        std::vector<std::vector<std::string>> ip_pool;
-        std::vector<std::vector<std::string>> result;
+        ip_table_str ip_pool_source;
+        ip_table_int ip_pool;
+        ip_table_int result;
 
         for (std::string line; std::getline(std::cin, line);)
         {
             std::vector<std::string> v = split(line, '\t');
-            ip_pool.push_back(split(v.at(0), '.'));
+            ip_pool_source.push_back(split(v.at(0), '.'));
         }
+
+        ip_pool = converter(ip_pool_source);
 
         // TODO reverse lexicographically sort
         desc_sort(ip_pool);

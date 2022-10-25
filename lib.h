@@ -3,8 +3,15 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <array>
 #include <initializer_list>
 #include <utility>
+
+using ip_table_int = std::vector<std::array<int, 4>>;
+using ip_table_str = std::vector<std::vector<std::string>>;
+
+//converting an ip pool from a string to an integer representation
+ip_table_int converter(const ip_table_str& ip_pool);
 
 // ("",  '.') -> [""]
 // ("11", '.') -> ["11"]
@@ -14,19 +21,16 @@
 // ("11.22", '.') -> ["11", "22"]
 std::vector<std::string> split(const std::string &str, char d);
 
-// (1.2.1.1, 1.10.1.1) -> false
-bool compare_ip(const std::vector<std::string>& ip_a, const std::vector<std::string>& ip_b);
-
 //descending sort
-void desc_sort(std::vector<std::vector<std::string>>& ip_pool);
+void desc_sort(ip_table_int& ip_pool);
 
 //filter
 template<typename... T>
-std::vector<std::vector<std::string>> filter(const std::vector<std::vector<std::string>>& ip_pool, T... args)
+ip_table_int filter(const ip_table_int& ip_pool, T... args)
 {
     constexpr size_t MAX_ARGS_NUMBER = 4;
     std::vector<int> values;
-    std::vector<std::vector<std::string>> result;
+    ip_table_int result;
     for (auto&& arg : std::initializer_list<int>{args...}) {
         values.push_back(arg);
     }
@@ -35,7 +39,7 @@ std::vector<std::vector<std::string>> filter(const std::vector<std::vector<std::
         size_t i_args = 0;
         for (auto value : values) {
             if (value >= 0 && value <= 255 && i_args < MAX_ARGS_NUMBER) {
-                condition &= (value == std::stoi(ip.at(i_args)));
+                condition &= (value == ip.at(i_args));
             }
             ++i_args;
         }
@@ -48,10 +52,10 @@ std::vector<std::vector<std::string>> filter(const std::vector<std::vector<std::
 
 //filter_any
 template<typename... T>
-std::vector<std::vector<std::string>> filter_any(const std::vector<std::vector<std::string>>& ip_pool, T... args)
+ip_table_int filter_any(const ip_table_int& ip_pool, T... args)
 {
     std::vector<int> values;
-    std::vector<std::vector<std::string>> result;
+    ip_table_int result;
     for (auto&& arg : std::initializer_list<int>{args...}) {
         values.push_back(arg);
     }
@@ -61,7 +65,7 @@ std::vector<std::vector<std::string>> filter_any(const std::vector<std::vector<s
             if (value >= 0 && value <= 255) {
                 bool condition_any = false;
                 for (const auto& ip_part : ip) {
-                    if (value == std::stoi(ip_part)) {
+                    if (value == ip_part) {
                         condition_any = true;
                         break;
                     }

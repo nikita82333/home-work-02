@@ -2,6 +2,18 @@
 
 #include "lib.h"
 
+ip_table_int converter(const ip_table_str& ip_pool) {
+    ip_table_int ip_pool_int;
+    for (const auto& ip : ip_pool) {
+        std::array<int, 4> ip_int {};
+        for (std::size_t i = 0; i < 4; ++i) {
+            ip_int.at(i) = std::stoi(ip.at(i));
+        }
+        ip_pool_int.emplace_back(ip_int);
+    }
+    return ip_pool_int;
+}
+
 std::vector<std::string> split(const std::string &str, char d)
 {
     std::vector<std::string> r;
@@ -21,26 +33,13 @@ std::vector<std::string> split(const std::string &str, char d)
     return r;
 }
 
-bool compare_ip(const std::vector<std::string>& ip_a, const std::vector<std::string>& ip_b)
+void desc_sort(ip_table_int& ip_pool)
 {
-    return std::lexicographical_compare(ip_a.begin(), ip_a.end(), ip_b.begin(), ip_b.end(),
-                                        [](const auto& a, const auto& b){
-                                            return std::stoi(a) > std::stoi(b);
-                                        });
-}
+    auto compare_ip = [](const auto& ip_a, const auto& ip_b){
+        return std::lexicographical_compare(ip_a.begin(), ip_a.end(), ip_b.begin(), ip_b.end(),
+                                            std::greater<>());
+    };
 
-void desc_sort(std::vector<std::vector<std::string>>& ip_pool)
-{
-    /*
-    * closure (as an option)
-
-        auto compare_ip = [](const auto& ip_a, const auto& ip_b){
-            return std::lexicographical_compare(ip_a.begin(), ip_a.end(), ip_b.begin(), ip_b.end(),
-                                                [](const auto& a, const auto& b){
-                                                    return std::stoi(a) > std::stoi(b);
-                                                });
-        };
-    */
     std::sort(ip_pool.begin(), ip_pool.end(), compare_ip);
 }
 
