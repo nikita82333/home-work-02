@@ -2,18 +2,6 @@
 
 #include "lib.h"
 
-ip_table_int converter(const ip_table_str& ip_pool) {
-    ip_table_int ip_pool_int;
-    for (const auto& ip : ip_pool) {
-        std::array<int, 4> ip_int {};
-        for (std::size_t i = 0; i < 4; ++i) {
-            ip_int.at(i) = std::stoi(ip.at(i));
-        }
-        ip_pool_int.emplace_back(ip_int);
-    }
-    return ip_pool_int;
-}
-
 std::vector<std::string> split(const std::string &str, char d)
 {
     std::vector<std::string> r;
@@ -33,7 +21,7 @@ std::vector<std::string> split(const std::string &str, char d)
     return r;
 }
 
-void desc_sort(ip_table_int& ip_pool)
+void desc_sort(ip_table& ip_pool)
 {
     auto compare_ip = [](const auto& ip_a, const auto& ip_b){
         return std::lexicographical_compare(ip_a.begin(), ip_a.end(), ip_b.begin(), ip_b.end(),

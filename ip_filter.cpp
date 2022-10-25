@@ -21,7 +21,7 @@ void print_ip(const std::array<int, 4>& ip)
     std::cout << std::endl;
 }
 
-void print_ip_pool(const ip_table_int& ip_pool)
+void print_ip_pool(const ip_table& ip_pool)
 {
     for (const auto& ip : ip_pool)
     {
@@ -33,17 +33,19 @@ int main(int, char **)
 {
     try
     {
-        ip_table_str ip_pool_source;
-        ip_table_int ip_pool;
-        ip_table_int result;
+        ip_table ip_pool;
+        ip_table result;
 
         for (std::string line; std::getline(std::cin, line);)
         {
             std::vector<std::string> v = split(line, '\t');
-            ip_pool_source.push_back(split(v.at(0), '.'));
+            std::vector<std::string> ip = split(v.at(0), '.');
+            std::array<int, 4> ip_int {};
+            for (std::size_t i = 0; i < 4; ++i) {
+                ip_int.at(i) = std::stoi(ip.at(i));
+            }
+            ip_pool.emplace_back(ip_int);
         }
-
-        ip_pool = converter(ip_pool_source);
 
         // TODO reverse lexicographically sort
         desc_sort(ip_pool);

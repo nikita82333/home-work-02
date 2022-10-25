@@ -13,11 +13,11 @@ void TestSplit(
     ASSERT_EQ(result, expected);
 }
 void TestSort(
-        const ip_table_int& input,
-        const ip_table_int& expected
+        const ip_table& input,
+        const ip_table& expected
 )
 {
-    ip_table_int result = {input};
+    ip_table result = {input};
     desc_sort(result);
     ASSERT_EQ(result, expected);
 }
@@ -45,7 +45,7 @@ TEST(split_test, test3)
 }
 TEST(sort_test, test1)
 {
-    const ip_table_int input =
+    const ip_table input =
             {
                     {68,46,218,208},
                     {185,46,85,78},
@@ -54,7 +54,7 @@ TEST(sort_test, test1)
                     {185,46,85,204},
                     {185,46,86,22}
             };
-    const ip_table_int expected =
+    const ip_table expected =
             {
                     {185,46,86,131},
                     {185,46,86,22},
@@ -67,7 +67,7 @@ TEST(sort_test, test1)
 }
 TEST(filter_test, test1)
 {
-    const ip_table_int input =
+    const ip_table input =
             {
                     {185,46,86,131},
                     {185,46,86,22},
@@ -76,20 +76,20 @@ TEST(filter_test, test1)
                     {68,46,218,208},
                     {49,251,197,23}
             };
-    const ip_table_int expected =
+    const ip_table expected =
             {
                     {185,46,86,131},
                     {185,46,86,22},
                     {185,46,85,204},
                     {185,46,85,78}
             };
-    ip_table_int result;
+    ip_table result;
     result = filter(input, 185);
     ASSERT_EQ(result, expected);
 }
 TEST(filter_test, test2)
 {
-    const ip_table_int input =
+    const ip_table input =
             {
                     {185,46,86,131},
                     {185,46,86,22},
@@ -98,18 +98,18 @@ TEST(filter_test, test2)
                     {68,46,218,208},
                     {49,251,197,23}
             };
-    const ip_table_int expected =
+    const ip_table expected =
             {
                     {185,46,86,131},
                     {185,46,86,22}
             };
-    ip_table_int result;
+    ip_table result;
     result = filter(input, -1, 46, 86);
     ASSERT_EQ(result, expected);
 }
 TEST(filter_test, test3)
 {
-    const ip_table_int input =
+    const ip_table input =
             {
                     {185,46,86,131},
                     {185,46,86,22},
@@ -118,17 +118,17 @@ TEST(filter_test, test3)
                     {68,46,218,208},
                     {49,251,197,23}
             };
-    const ip_table_int expected =
+    const ip_table expected =
             {
                     {49,251,197,23}
             };
-    ip_table_int result;
+    ip_table result;
     result = filter(input, -1, -1, -1, 23);
     ASSERT_EQ(result, expected);
 }
 TEST(filter_any_test, test1)
 {
-    const ip_table_int input =
+    const ip_table input =
             {
                     {185,46,86,131},
                     {185,46,86,22},
@@ -139,7 +139,7 @@ TEST(filter_any_test, test1)
                     {46,49,43,86},
                     {39,46,86,85}
             };
-    const ip_table_int expected =
+    const ip_table expected =
             {
                     {185,46,86,131},
                     {185,46,86,22},
@@ -147,12 +147,12 @@ TEST(filter_any_test, test1)
                     {46,49,43,86},
                     {39,46,86,85}
             };
-    ip_table_int result;
+    ip_table result;
     result = filter_any(input, 86);
     ASSERT_EQ(result, expected);
 }
 TEST(filter_any_test, test2) {
-    const ip_table_int input =
+    const ip_table input =
             {
                     {185, 46, 86, 131},
                     {185, 46, 86, 22},
@@ -163,13 +163,13 @@ TEST(filter_any_test, test2) {
                     {46,  49, 43, 86},
                     {39,  46, 86, 85}
             };
-    const ip_table_int expected =
+    const ip_table expected =
             {
                     {185, 46, 85, 204},
                     {185, 46, 85, 78},
                     {39,  46, 86, 85}
             };
-    ip_table_int result;
+    ip_table result;
     result = filter_any(input, 46, 85);
     ASSERT_EQ(result, expected);
 }
